@@ -1,7 +1,9 @@
 package com.techtracker.technology_service.controller;
 
 import com.techtracker.technology_service.model.Technology;
+import com.techtracker.technology_service.model.event.TechnologyEvent;
 import com.techtracker.technology_service.service.TechnologyService;
+import com.techtracker.technology_service.service.kafka.TechnologyKafkaProducer;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,14 +15,27 @@ import java.util.List;
 public class TechnologyController {
 
     private final TechnologyService technologyService;
+    private final TechnologyKafkaProducer producer;
 
-    public TechnologyController(TechnologyService technologyService) {
+    public TechnologyController(TechnologyService technologyService, TechnologyKafkaProducer producer) {
         this.technologyService = technologyService;
+        this.producer = producer;
     }
 
     @PostMapping
     public ResponseEntity<Technology> addTechnology(@Valid @RequestBody Technology technology) {
         Technology created = technologyService.addTechnology(technology);
+
+        TechnologyEvent event = new TechnologyEvent(
+            created.getId(),
+            created.getName(),
+            created.getConfidenceLevel(),
+            created.getImportanceScore(),
+            created.getCategory(),
+            created.getProjects()
+        );
+        producer.sendTechnologyEvent(event);
+
         return ResponseEntity.status(201).body(created);
     }
 
