@@ -25,5 +25,7 @@ jobs:
       - name: Build and push Docker image
         run: |
           TAG_NAME=${GITHUB_REF#refs/tags/}
-          docker build -t juileekharat/technology-service:$TAG_NAME .
+          docker build -t juileekharat/technology-service:$TAG_NAME ./technology-service
           docker push juileekharat/technology-service:$TAG_NAME
+          
+          
