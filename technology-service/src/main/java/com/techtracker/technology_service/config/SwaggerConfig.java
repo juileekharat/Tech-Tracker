@@ -10,6 +10,7 @@ public class SwaggerConfig {
 
     @Bean
     public OpenAPI customOpenAPI() {
+        //This is Test comment to verify versioning via git
         return new OpenAPI()
                 .info(new Info()
                         .title("Technology Service API")
