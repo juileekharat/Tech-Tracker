@@ -1,9 +1,9 @@
-name: Release Technology Service
+name: Release API Gateway Service
 
 on:
   push:
     tags:
-      - 'technology-v*'  # only trigger if tag starts with technology-v
+      - 'gateway-v*'  # only trigger if tag starts with technology-v
 
 jobs:
   build-and-push:
@@ -25,5 +25,7 @@ jobs:
       - name: Build and push Docker image
         run: |
           TAG_NAME=${GITHUB_REF#refs/tags/}
-          docker build -t juileekharat/technology-service:$TAG_NAME .
-          docker push juileekharat/technology-service:$TAG_NAME
+          docker build -t juileekharat/api-gateway-service:$TAG_NAME ./api-gateway-service
+          docker push juileekharat/api-gateway-service:$TAG_NAME
+          
+          
