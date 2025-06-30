@@ -25,7 +25,7 @@ jobs:
       - name: Build and push Docker image
         run: |
           TAG_NAME=${GITHUB_REF#refs/tags/}
-          docker build -t juileekharat/api-gateway-service:$TAG_NAME ./api-gateway-service
+          docker build -t juileekharat/api-gateway-service:$TAG_NAME ./api-gateway
           docker push juileekharat/api-gateway-service:$TAG_NAME
           
           
