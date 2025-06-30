@@ -13,7 +13,7 @@ public class ProjectKafkaProducer {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void sendProjectEvent(ProjectEvent event) {
+    public void  sendProjectEvent(ProjectEvent event) {
         kafkaTemplate.send("project-events", event);
     }
 }
