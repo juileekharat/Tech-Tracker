@@ -32,4 +32,10 @@ public class AuthController {
         String token = jwtUtil.generateToken(foundUser.getUsername());
         return ResponseEntity.ok(new AuthResponse(token));
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout() {
+        // Stateless logout: client should delete the JWT token
+        return ResponseEntity.ok("Logged out successfully. Please delete the token on client side.");
+    }
 }
