@@ -20,6 +20,11 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public User registerUser(User user) {
+
+        // Check for duplicate username
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+            throw new RuntimeException("Username already exists");
+        }
         // Hash the password before saving
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);

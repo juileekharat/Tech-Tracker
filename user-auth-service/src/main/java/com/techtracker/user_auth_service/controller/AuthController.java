@@ -4,6 +4,7 @@ import com.techtracker.user_auth_service.model.AuthResponse;
 import com.techtracker.user_auth_service.model.User;
 import com.techtracker.user_auth_service.service.AuthService;
 import com.techtracker.user_auth_service.util.JwtUtil;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,9 +22,13 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody User user) {
-        User createdUser = authService.registerUser(user);
-        String token = jwtUtil.generateToken(createdUser.getUsername());
-        return ResponseEntity.ok(new AuthResponse(token));
+        try {
+            User createdUser = authService.registerUser(user);
+            String token = jwtUtil.generateToken(createdUser.getUsername());
+            return ResponseEntity.ok(new AuthResponse(token));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     @PostMapping("/login")
